@@ -1,4 +1,4 @@
-package com.example.train_task.ui
+package com.example.train_task.presenter
 
 import com.example.train_task.database.NumberDataBase
 import com.example.train_task.model.NumberModel
@@ -16,7 +16,7 @@ class NumberPresenter(private val view: NumberView) {
     /**
      * This method prepare the multiplication result from retrieved data and assign it to interface method
      */
-     fun getMulResult() {
+    fun getMulResult() {
         val numberModel = getNumbers()
         val result = numberModel.first * numberModel.second
         view.getMulResult(result)

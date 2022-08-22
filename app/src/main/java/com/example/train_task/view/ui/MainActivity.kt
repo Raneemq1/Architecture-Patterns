@@ -1,9 +1,9 @@
-package com.example.train_task.ui
+package com.example.train_task.view.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import butterknife.BindView
@@ -11,6 +11,9 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.example.train_task.R
 import com.example.train_task.database.NumberDataBase
+import com.example.train_task.presenter.NumberPresenter
+import com.example.train_task.presenter.NumberView
+import com.example.train_task.viewmodel.NumberViewModel
 
 class MainActivity : AppCompatActivity(), NumberView {
 
@@ -18,41 +21,43 @@ class MainActivity : AppCompatActivity(), NumberView {
      * Declare layout widgets
      */
     @BindView(R.id.num1)
-    lateinit var num1_text: TextView
+    lateinit var num1Text: TextView
 
     @BindView(R.id.num2)
-    lateinit var num2_text: TextView
+    lateinit var num2Text: TextView
 
     @BindView(R.id.plus_res)
-    lateinit var plus_res: TextView
+    lateinit var plusRes: TextView
 
     @BindView(R.id.sub_res)
-   lateinit var sub_res: TextView
+    lateinit var subRes: TextView
 
     @BindView(R.id.mul_res)
-     lateinit var mul_res: TextView
+    lateinit var mulRes: TextView
 
     @BindView(R.id.mul_btn)
-    lateinit var mul_btn: Button
+    lateinit var muLBtn: Button
 
     @BindView(R.id.plus_btn)
-     lateinit var plus_btn: Button
+    lateinit var plusBtn: Button
 
     @BindView(R.id.minus_btn)
-     lateinit var minus_btn: Button
+    lateinit var minusBtn: Button
 
     /**
      * Initialize an instance to the database
      */
-    private lateinit var number_db: NumberDataBase
+    private lateinit var numberDB: NumberDataBase
+
     /**
      * Initialize an instance to the presenter
      */
-    private lateinit var mul_presenter: NumberPresenter
+    private lateinit var mulPresenter: NumberPresenter
+
     /**
      * Initialize an instance to the view model
      */
-    private lateinit var viewModel:NumberViewModel
+    private lateinit var viewModel: NumberViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,9 +69,9 @@ class MainActivity : AppCompatActivity(), NumberView {
 
 
 
-        number_db = NumberDataBase()
-        mul_presenter = NumberPresenter(this)
-        viewModel=NumberViewModel()
+        numberDB = NumberDataBase()
+        mulPresenter = NumberPresenter(this)
+        viewModel = NumberViewModel()
         viewModel = ViewModelProviders.of(this).get(NumberViewModel::class.java)
 
         /**
@@ -80,23 +85,22 @@ class MainActivity : AppCompatActivity(), NumberView {
         observeViewModel()
 
 
-
     }
 
 
     private fun viewNumbers() {
 
-        num1_text.text = number_db.getNumbers().first.toString()
-        num2_text.text = number_db.getNumbers().second.toString()
+        num1Text.text = numberDB.getNumbers().first.toString()
+        num2Text.text = numberDB.getNumbers().second.toString()
     }
 
     /**
      * Make the view model object observed any change in a mutable live data
      * Assign subtraction result with this observed data
      */
-    private fun observeViewModel(){
-        viewModel.res.observe(this,Observer<Int>{res->
-          sub_res.text=res.toString()
+    private fun observeViewModel() {
+        viewModel.res.observe(this, Observer<Int> { res ->
+            subRes.text = res.toString()
         })
     }
 
@@ -107,12 +111,12 @@ class MainActivity : AppCompatActivity(), NumberView {
      * Display the result on result text
      */
     @OnClick(R.id.plus_btn)
-     fun resultMVC() {
-        val num1 = number_db.getNumbers().first
-        val num2 = number_db.getNumbers().second
+    fun resultMVC() {
+        val num1 = numberDB.getNumbers().first
+        val num2 = numberDB.getNumbers().second
         val result = addResult(num1, num2)
 
-        plus_res.text = result.toString()
+        plusRes.text = result.toString()
 
 
     }
@@ -126,8 +130,8 @@ class MainActivity : AppCompatActivity(), NumberView {
      * Invoke get mul result from presenter class
      */
     @OnClick(R.id.mul_btn)
-     fun resultMVP() {
-        mul_presenter.getMulResult()
+    fun resultMVP() {
+        mulPresenter.getMulResult()
     }
 
     /**
@@ -135,7 +139,7 @@ class MainActivity : AppCompatActivity(), NumberView {
      * Assign mul result with the method parameter that assigned from the presenter class
      */
     override fun getMulResult(res: Int) {
-        mul_res.text = res.toString()
+        mulRes.text = res.toString()
     }
 
     /**
@@ -143,7 +147,7 @@ class MainActivity : AppCompatActivity(), NumberView {
      * Invoke get result method from view model class
      */
     @OnClick(R.id.minus_btn)
-     fun resultMVVM(){
+    fun resultMVVM() {
         viewModel.getResult()
     }
 

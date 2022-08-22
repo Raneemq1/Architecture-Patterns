@@ -7,7 +7,7 @@ class NumberDataBase {
     /**
      * This method simulate retrieving the data from database
      */
-    fun getNumbers():NumberModel{
-        return NumberModel(2,4)
+    fun getNumbers(): NumberModel {
+        return NumberModel(2, 4)
     }
 }
